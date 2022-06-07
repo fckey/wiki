@@ -1,7 +1,8 @@
 package com.fangshaolei.wiki.controller;
 
-import com.fangshaolei.wiki.domain.Ebook;
+import com.fangshaolei.wiki.req.EbookReq;
 import com.fangshaolei.wiki.resp.CommonResp;
+import com.fangshaolei.wiki.resp.EbookResp;
 import com.fangshaolei.wiki.service.EbookService;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,11 +23,18 @@ import java.util.List;
 public class EbookController {
     @Resource
     private EbookService ebookService;
-
+    /**
+      * @author: fangshaolei
+      * @description:
+      * @Date: 2022/6/7 22:50
+      * @params: 
+      * @return: 
+      **/
     @GetMapping("/list")
-    public CommonResp<List<Ebook>> list(){
-        CommonResp<List<Ebook>> resp = new CommonResp<>();
-        List<Ebook> list = ebookService.list();
+    public CommonResp<List<EbookResp>> list(EbookReq req){
+        CommonResp<List<EbookResp>> resp = new CommonResp<>();
+        // 封装数据
+        List<EbookResp> list = ebookService.list(req);
         resp.setContent(list);
         return resp;
     }
