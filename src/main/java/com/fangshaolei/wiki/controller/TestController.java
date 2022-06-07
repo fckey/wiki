@@ -1,6 +1,5 @@
 package com.fangshaolei.wiki.controller;
 
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -15,12 +14,10 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 public class TestController {
 
-    @Value("${hello.name:hahahahah}")
-    private String name;
 
     @RequestMapping("/hello")
     public String hello(){
-        return "hello world" + name;
+        return "hello world";
     }
 
     @PostMapping("/hello/post")
