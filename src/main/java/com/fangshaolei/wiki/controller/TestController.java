@@ -1,10 +1,9 @@
 package com.fangshaolei.wiki.controller;
 
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-import java.util.Map;
 
 /**
  * @author fangshaolei
@@ -16,9 +15,12 @@ import java.util.Map;
 @RestController
 public class TestController {
 
+    @Value("${hello.name:hahahahah}")
+    private String name;
+
     @RequestMapping("/hello")
     public String hello(){
-        return "hello world";
+        return "hello world" + name;
     }
 
     @PostMapping("/hello/post")
