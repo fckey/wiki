@@ -5,11 +5,10 @@ import com.fangshaolei.wiki.domain.EbookExample;
 import com.fangshaolei.wiki.mapper.EbookMapper;
 import com.fangshaolei.wiki.req.EbookReq;
 import com.fangshaolei.wiki.resp.EbookResp;
-import org.springframework.beans.BeanUtils;
+import com.fangshaolei.wiki.util.CopyUtil;
 import org.springframework.stereotype.Service;
 
 import javax.annotation.Resource;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -37,12 +36,7 @@ public class EbookService {
         criteria.andNameLike("%" + req.getName() + "%");
         List<Ebook> ebookList = ebookMapper.selectByExample(example);
         // 进行转换
-        List<EbookResp> respList = new ArrayList<>();
-        for (Ebook ebook : ebookList) {
-            EbookResp ebookResp = new EbookResp();
-            BeanUtils.copyProperties(ebook, ebookResp);
-            respList.add(ebookResp);
-        }
+        List<EbookResp> respList = CopyUtil.copyList(ebookList, EbookResp.class);
         return respList;
     }
 }
