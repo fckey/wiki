@@ -7,6 +7,7 @@ import com.fangshaolei.wiki.req.EbookReq;
 import com.fangshaolei.wiki.resp.EbookResp;
 import com.fangshaolei.wiki.util.CopyUtil;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -33,7 +34,9 @@ public class EbookService {
     public List<EbookResp> list(EbookReq req){
         EbookExample example = new EbookExample();
         EbookExample.Criteria criteria = example.createCriteria();
-        criteria.andNameLike("%" + req.getName() + "%");
+        if(!ObjectUtils.isEmpty(req.getName())) {
+            criteria.andNameLike("%" + req.getName() + "%");
+        }
         List<Ebook> ebookList = ebookMapper.selectByExample(example);
         // 进行转换
         List<EbookResp> respList = CopyUtil.copyList(ebookList, EbookResp.class);
