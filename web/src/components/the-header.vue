@@ -7,7 +7,7 @@
         :style="{ lineHeight: '64px' }"
     >
       <a-menu-item key="1">
-        nav 11111111111111
+        nav 1
       </a-menu-item>
       <a-menu-item key="2">
         nav 2
