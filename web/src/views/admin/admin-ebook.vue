@@ -1,5 +1,5 @@
 <template>
   <div class="about">
-    <h1>关于我</h1>
+    电子书管理
   </div>
 </template>
