@@ -8,6 +8,7 @@ import com.fangshaolei.wiki.resp.EbookQueryResp;
 import com.fangshaolei.wiki.resp.EbookSaveReq;
 import com.fangshaolei.wiki.resp.PageResp;
 import com.fangshaolei.wiki.util.CopyUtil;
+import com.fangshaolei.wiki.util.SnowFlake;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -28,6 +29,8 @@ public class EbookService {
 
     @Resource
     private EbookMapper ebookMapper;
+    @Resource
+    private SnowFlake snowFlake;
     /**
       * @author: fangshaolei
       * @description: 
@@ -68,6 +71,7 @@ public class EbookService {
         Ebook ebook = CopyUtil.copy(req, Ebook.class);
         // 判断当前的id是否是存在的，如果不存在则直接新增
         if(ObjectUtils.isEmpty(req.getId())){
+            ebook.setId(snowFlake.nextId());
             // 新增
             ebookMapper.insert(ebook);
         } else{
