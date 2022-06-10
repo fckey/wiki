@@ -5,12 +5,12 @@ import lombok.Data;
 /**
  * @author fangshaolei
  * @version 1.0.0
- * @ClassName EbookResp
+ * @ClassName EbookQueryResp
  * @Description
  * @createTime 2022/06/07 22:54
  **/
 @Data
-public class EbookResp {
+public class EbookQueryResp {
     private Long id;
 
     private String name;
@@ -31,7 +31,7 @@ public class EbookResp {
 
     @Override
     public String toString() {
-        return "EbookResp{" +
+        return "EbookQueryResp{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", category1Id=" + category1Id +

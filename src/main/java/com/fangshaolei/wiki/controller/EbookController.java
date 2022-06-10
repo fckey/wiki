@@ -1,13 +1,12 @@
 package com.fangshaolei.wiki.controller;
 
-import com.fangshaolei.wiki.req.EbookReq;
+import com.fangshaolei.wiki.req.EbookQueryReq;
 import com.fangshaolei.wiki.resp.CommonResp;
-import com.fangshaolei.wiki.resp.EbookResp;
+import com.fangshaolei.wiki.resp.EbookQueryResp;
+import com.fangshaolei.wiki.resp.EbookSaveReq;
 import com.fangshaolei.wiki.resp.PageResp;
 import com.fangshaolei.wiki.service.EbookService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 
@@ -25,17 +24,31 @@ public class EbookController {
     private EbookService ebookService;
     /**
       * @author: fangshaolei
-      * @description:
+      * @description: 查询电子书列表
       * @Date: 2022/6/7 22:50
       * @params: 
       * @return: 
       **/
     @GetMapping("/list")
-    public CommonResp<PageResp<EbookResp>> list(EbookReq req){
-        CommonResp<PageResp<EbookResp>> resp = new CommonResp<>();
+    public CommonResp<PageResp<EbookQueryResp>> list(EbookQueryReq req){
+        CommonResp<PageResp<EbookQueryResp>> resp = new CommonResp<>();
         // 封装数据
-        PageResp<EbookResp> list = ebookService.list(req);
+        PageResp<EbookQueryResp> list = ebookService.list(req);
         resp.setContent(list);
+        return resp;
+    }
+    
+    /**
+      * @author: fangshaolei
+      * @description: 
+      * @Date: 2022/6/10 10:41
+      * @params: 
+      * @return: 
+      **/
+    @PostMapping("/save")
+    public CommonResp save(@RequestBody EbookSaveReq req){
+        CommonResp resp = new CommonResp();
+        ebookService.save(req);
         return resp;
     }
 }

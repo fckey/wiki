@@ -3,8 +3,9 @@ package com.fangshaolei.wiki.service;
 import com.fangshaolei.wiki.domain.Ebook;
 import com.fangshaolei.wiki.domain.EbookExample;
 import com.fangshaolei.wiki.mapper.EbookMapper;
-import com.fangshaolei.wiki.req.EbookReq;
-import com.fangshaolei.wiki.resp.EbookResp;
+import com.fangshaolei.wiki.req.EbookQueryReq;
+import com.fangshaolei.wiki.resp.EbookQueryResp;
+import com.fangshaolei.wiki.resp.EbookSaveReq;
 import com.fangshaolei.wiki.resp.PageResp;
 import com.fangshaolei.wiki.util.CopyUtil;
 import com.github.pagehelper.PageHelper;
@@ -34,7 +35,7 @@ public class EbookService {
       * @params: 
       * @return: 
       **/
-    public PageResp<EbookResp> list(EbookReq req){
+    public PageResp<EbookQueryResp> list(EbookQueryReq req){
 ;
         EbookExample example = new EbookExample();
         EbookExample.Criteria criteria = example.createCriteria();
@@ -48,12 +49,30 @@ public class EbookService {
         PageInfo<Ebook> pageInfo = new PageInfo(ebookList);
 
         // 进行转换
-        List<EbookResp> respList = CopyUtil.copyList(ebookList, EbookResp.class);
+        List<EbookQueryResp> respList = CopyUtil.copyList(ebookList, EbookQueryResp.class);
         // 插件对象封装
-        PageResp<EbookResp> pageResp = new PageResp<>();
+        PageResp<EbookQueryResp> pageResp = new PageResp<>();
         pageResp.setTotal(pageInfo.getTotal());
         pageResp.setList(respList);
 
         return pageResp;
+    }
+    /**
+      * @author: fangshaolei
+      * @description: 保存
+      * @Date: 2022/6/10 10:46
+      * @params: 
+      * @return: 
+      **/
+    public void save(EbookSaveReq req){
+        Ebook ebook = CopyUtil.copy(req, Ebook.class);
+        // 判断当前的id是否是存在的，如果不存在则直接新增
+        if(ObjectUtils.isEmpty(req.getId())){
+            // 新增
+            ebookMapper.insert(ebook);
+        } else{
+            // 更新
+            ebookMapper.updateByPrimaryKey(ebook);
+        }
     }
 }
