@@ -6,6 +6,8 @@ import com.fangshaolei.wiki.mapper.EbookMapper;
 import com.fangshaolei.wiki.req.EbookReq;
 import com.fangshaolei.wiki.resp.EbookResp;
 import com.fangshaolei.wiki.util.CopyUtil;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -32,12 +34,18 @@ public class EbookService {
       * @return: 
       **/
     public List<EbookResp> list(EbookReq req){
+;
         EbookExample example = new EbookExample();
         EbookExample.Criteria criteria = example.createCriteria();
         if(!ObjectUtils.isEmpty(req.getName())) {
             criteria.andNameLike("%" + req.getName() + "%");
         }
+        // 分页插件
+        PageHelper.startPage(1, 3);
         List<Ebook> ebookList = ebookMapper.selectByExample(example);
+        // 获取其他信息
+        PageInfo<Ebook> pageInfo = new PageInfo(ebookList);
+        pageInfo.getTotal();
         // 进行转换
         List<EbookResp> respList = CopyUtil.copyList(ebookList, EbookResp.class);
         return respList;
