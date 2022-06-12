@@ -3,7 +3,7 @@ package com.fangshaolei.wiki.controller;
 import com.fangshaolei.wiki.req.EbookQueryReq;
 import com.fangshaolei.wiki.resp.CommonResp;
 import com.fangshaolei.wiki.resp.EbookQueryResp;
-import com.fangshaolei.wiki.resp.EbookSaveReq;
+import com.fangshaolei.wiki.req.EbookSaveReq;
 import com.fangshaolei.wiki.resp.PageResp;
 import com.fangshaolei.wiki.service.EbookService;
 import org.springframework.web.bind.annotation.*;
@@ -47,7 +47,7 @@ public class EbookController {
       * @return: 
       **/
     @PostMapping("/save")
-    public CommonResp save(@RequestBody EbookSaveReq req){
+    public CommonResp save(@Valid @RequestBody EbookSaveReq req){
         CommonResp resp = new CommonResp();
         ebookService.save(req);
         return resp;

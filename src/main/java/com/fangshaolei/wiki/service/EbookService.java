@@ -5,7 +5,7 @@ import com.fangshaolei.wiki.domain.EbookExample;
 import com.fangshaolei.wiki.mapper.EbookMapper;
 import com.fangshaolei.wiki.req.EbookQueryReq;
 import com.fangshaolei.wiki.resp.EbookQueryResp;
-import com.fangshaolei.wiki.resp.EbookSaveReq;
+import com.fangshaolei.wiki.req.EbookSaveReq;
 import com.fangshaolei.wiki.resp.PageResp;
 import com.fangshaolei.wiki.util.CopyUtil;
 import com.fangshaolei.wiki.util.SnowFlake;
