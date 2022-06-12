@@ -63,6 +63,11 @@
             <artifactId>pagehelper-spring-boot-starter</artifactId>
             <version>1.2.13</version>
         </dependency>
+        <!--增加校验依赖-->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-validation</artifactId>
+        </dependency>
     </dependencies>
 
     <build>

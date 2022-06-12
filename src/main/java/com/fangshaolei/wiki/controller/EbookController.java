@@ -9,6 +9,7 @@ import com.fangshaolei.wiki.service.EbookService;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import javax.validation.Valid;
 
 /**
  * @author fangshaolei
@@ -30,7 +31,7 @@ public class EbookController {
       * @return: 
       **/
     @GetMapping("/list")
-    public CommonResp<PageResp<EbookQueryResp>> list(EbookQueryReq req){
+    public CommonResp<PageResp<EbookQueryResp>> list(@Valid EbookQueryReq req){
         CommonResp<PageResp<EbookQueryResp>> resp = new CommonResp<>();
         // 封装数据
         PageResp<EbookQueryResp> list = ebookService.list(req);
