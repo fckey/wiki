@@ -18,5 +18,20 @@ module.exports = {
     '@typescript-eslint/no-explicit-any':0,
     'vue/no-unused-vars': 0,
     '@typescript-eslint/no-unused-vars': 0,
+    "@typescript-eslint/ban-types": ["error",
+      {
+        "types": {
+          "String": false,
+          "Boolean": false,
+          "Number": false,
+          "Symbol": false,
+          "{}": false,
+          "Object": false,
+          "object": false,
+          "Function": false,
+        },
+        "extendDefaults": true
+      }
+    ]
   }
 }
