@@ -79,4 +79,15 @@ public class EbookService {
             ebookMapper.updateByPrimaryKey(ebook);
         }
     }
+    /**
+      * @author: fangshaolei
+      * @description: 删除电子书记录
+      * @Date: 2022/6/12 16:10
+      * @params: 
+      * @return: 
+      **/
+    public void delete(Long id) {
+        // 通过id进行删除
+        ebookMapper.deleteByPrimaryKey(id);
+    }
 }
