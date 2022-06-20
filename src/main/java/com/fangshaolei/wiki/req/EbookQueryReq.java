@@ -14,12 +14,7 @@ import lombok.Data;
 public class EbookQueryReq extends PageReq {
     private Long id;
     private String name;
+    private Long categoryId2;
 
-    @Override
-    public String toString() {
-        return "EbookQueryReq{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
-    }
+
 }

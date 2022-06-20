@@ -45,6 +45,11 @@ public class EbookService {
         if(!ObjectUtils.isEmpty(req.getName())) {
             criteria.andNameLike("%" + req.getName() + "%");
         }
+
+        if(!ObjectUtils.isEmpty(req.getCategoryId2()))  {
+            // 对二级分类进行限制
+            criteria.andCategory2IdEqualTo(req.getCategoryId2());
+        }
         // 分页插件
         PageHelper.startPage(req.getPage(), req.getSize());
         List<Ebook> ebookList = ebookMapper.selectByExample(example);
