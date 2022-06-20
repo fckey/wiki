@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.List;
 
 /**
  * @author fangshaolei
@@ -23,6 +24,21 @@ import javax.validation.Valid;
 public class CategoryController {
     @Resource
     private CategoryService categoryService;
+    /**
+      * @author: fangshaolei
+      * @description: 返回当前所有的数据没有分页条件
+      * @Date: 2022/6/20 9:37
+      * @params:
+      * @return:
+      **/
+    @GetMapping("/all")
+    public CommonResp<List<CategoryQueryResp>> all(){
+        CommonResp<List<CategoryQueryResp>> resp = new CommonResp<>();
+        // 封装数据
+        List<CategoryQueryResp> list = categoryService.all();
+        resp.setContent(list);
+        return resp;
+    }
     /**
       * @author: fangshaolei
       * @description: 查询电子书列表

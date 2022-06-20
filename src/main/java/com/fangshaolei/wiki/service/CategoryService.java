@@ -31,6 +31,26 @@ public class CategoryService {
     private CategoryMapper categoryMapper;
     @Resource
     private SnowFlake snowFlake;
+
+    /**
+      * @author: fangshaolei
+      * @description:
+      * @Date: 2022/6/20 9:35
+      * @params:
+      * @return:
+      **/
+
+    public List<CategoryQueryResp> all(){
+        ;
+        CategoryExample example = new CategoryExample();
+        example.setOrderByClause("sort asc");
+        // 分页插件
+        List<Category> categoryList = categoryMapper.selectByExample(example);
+        // 获取其他信息
+        // 进行转换
+        List<CategoryQueryResp> respList = CopyUtil.copyList(categoryList, CategoryQueryResp.class);
+        return respList;
+    }
     /**
       * @author: fangshaolei
       * @description: 
@@ -41,6 +61,8 @@ public class CategoryService {
     public PageResp<CategoryQueryResp> list(CategoryQueryReq req){
 ;
         CategoryExample example = new CategoryExample();
+        example.setOrderByClause("sort asc");
+        // 书写where条件
         CategoryExample.Criteria criteria = example.createCriteria();
         // 分页插件
         PageHelper.startPage(req.getPage(), req.getSize());
