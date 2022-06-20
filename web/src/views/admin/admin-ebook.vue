@@ -141,6 +141,8 @@ export default defineComponent({
      **/
     const handleQuery = (params: any) => {
       loading.value = true;
+      // 如果不清空现有数据，则编辑保存重新加载数据之后，在点击编辑，则列表中显示的还是编辑前的数据
+      ebooks.value = [];
       axios.get("/ebook/list", {
         params: {
           page: params.page,
