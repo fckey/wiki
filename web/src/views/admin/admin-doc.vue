@@ -268,6 +268,8 @@ export default defineComponent({
 
     const handleDelete = (id: number) => {
       // console.log(level1, level1.value, id)
+      deleteIds.length = 0;
+      deleteNames.length = 0;
       getDeleteIds(level1.value, id);
       Modal.confirm({
         title: '重要提醒',
