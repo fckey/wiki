@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import javax.validation.Valid;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -70,16 +71,16 @@ public class DocController {
     }
     /**
       * @author: fangshaolei
-      * @description:
+      * @description: 批量的删除多个id的值
       * @Date: 2022/6/12 16:06
       * @params:
       * @return:
       **/
-    @DeleteMapping("/delete/{id}")
-    public CommonResp delete(@PathVariable Long id){
-        CommonResp resp = new CommonResp();
-        docService.delete(id);
+    @DeleteMapping("/delete/{idsStr}")
+    public CommonResp delete(@PathVariable String idsStr) {
+        CommonResp resp = new CommonResp<>();
+        List<String> list = Arrays.asList(idsStr.split(","));
+        docService.delete(list);
         return resp;
     }
-
 }
