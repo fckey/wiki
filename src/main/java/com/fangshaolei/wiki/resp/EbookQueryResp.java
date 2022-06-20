@@ -1,6 +1,9 @@
 package com.fangshaolei.wiki.resp;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import lombok.Data;
+import org.springframework.jdbc.support.CustomSQLErrorCodesTranslation;
 
 /**
  * @author fangshaolei
