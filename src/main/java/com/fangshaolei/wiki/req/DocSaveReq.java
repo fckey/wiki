@@ -12,6 +12,16 @@ public class DocSaveReq {
     private String name;
     @NotNull(message = "sort is not null")
     private Integer sort;
+    @NotNull(message = "content is not null")
+    private String content;
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
     private Integer viewCount;
 

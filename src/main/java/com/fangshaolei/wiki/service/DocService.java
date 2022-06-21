@@ -1,7 +1,9 @@
 package com.fangshaolei.wiki.service;
 
+import com.fangshaolei.wiki.domain.Content;
 import com.fangshaolei.wiki.domain.Doc;
 import com.fangshaolei.wiki.domain.DocExample;
+import com.fangshaolei.wiki.mapper.ContentMapper;
 import com.fangshaolei.wiki.mapper.DocMapper;
 import com.fangshaolei.wiki.req.DocQueryReq;
 import com.fangshaolei.wiki.req.DocSaveReq;
@@ -31,16 +33,18 @@ public class DocService {
     private DocMapper docMapper;
     @Resource
     private SnowFlake snowFlake;
+    @Resource
+    private ContentMapper contentMapper;
 
     /**
-      * @author: fangshaolei
-      * @description:
-      * @Date: 2022/6/20 9:35
-      * @params:
-      * @return:
-      **/
+     * @author: fangshaolei
+     * @description:
+     * @Date: 2022/6/20 9:35
+     * @params:
+     * @return:
+     **/
 
-    public List<DocQueryResp> all(){
+    public List<DocQueryResp> all() {
         ;
         DocExample example = new DocExample();
         example.setOrderByClause("sort asc");
@@ -51,15 +55,16 @@ public class DocService {
         List<DocQueryResp> respList = CopyUtil.copyList(docList, DocQueryResp.class);
         return respList;
     }
+
     /**
-      * @author: fangshaolei
-      * @description: 
-      * @Date: 2022/6/7 22:54
-      * @params: 
-      * @return: 
-      **/
-    public PageResp<DocQueryResp> list(DocQueryReq req){
-;
+     * @author: fangshaolei
+     * @description:
+     * @Date: 2022/6/7 22:54
+     * @params:
+     * @return:
+     **/
+    public PageResp<DocQueryResp> list(DocQueryReq req) {
+        ;
         DocExample example = new DocExample();
         example.setOrderByClause("sort asc");
         // 书写where条件
@@ -79,32 +84,43 @@ public class DocService {
 
         return pageResp;
     }
+
     /**
-      * @author: fangshaolei
-      * @description: 保存
-      * @Date: 2022/6/10 10:46
-      * @params: 
-      * @return: 
-      **/
-    public void save(DocSaveReq req){
+     * @author: fangshaolei
+     * @description: 保存
+     * @Date: 2022/6/10 10:46
+     * @params:
+     * @return:
+     **/
+    public void save(DocSaveReq req) {
         Doc doc = CopyUtil.copy(req, Doc.class);
+        Content content = CopyUtil.copy(req, Content.class);
         // 判断当前的id是否是存在的，如果不存在则直接新增
-        if(ObjectUtils.isEmpty(req.getId())){
+        if (ObjectUtils.isEmpty(req.getId())) {
             doc.setId(snowFlake.nextId());
-            // 新增
+            // 新增 doc
+            doc.setId(snowFlake.nextId());
             docMapper.insert(doc);
-        } else{
+            // 新增content
+            content.setId(doc.getId());
+            contentMapper.insert(content);
+        } else {
             // 更新
             docMapper.updateByPrimaryKey(doc);
+            int count = contentMapper.updateByPrimaryKeyWithBLOBs(content);
+            if (count == 0) {
+                contentMapper.insert(content);
+            }
         }
     }
+
     /**
-      * @author: fangshaolei
-      * @description: 删除电子书记录
-      * @Date: 2022/6/12 16:10
-      * @params: 
-      * @return: 
-      **/
+     * @author: fangshaolei
+     * @description: 删除电子书记录
+     * @Date: 2022/6/12 16:10
+     * @params:
+     * @return:
+     **/
     public void delete(List<String> ids) {
         DocExample docExample = new DocExample();
         DocExample.Criteria criteria = docExample.createCriteria();
