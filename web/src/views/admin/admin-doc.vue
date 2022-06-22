@@ -1,11 +1,10 @@
 <template>
-
   <a-layout>
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
       <a-row :gutter="24">
-        <a-col :span="6">
+        <a-col :span="8">
           <p>
             <a-form layout="inline" :model="param">
               <a-form-item>
@@ -31,16 +30,15 @@
               :defaultExpandAllRows="true"
           >
             <template #name="{ text, record }">
-              {{ record.sort }} {{ text }}
+              {{record.sort}} {{text}}
             </template>
             <template v-slot:action="{ text, record }">
               <a-space size="small">
                 <a-button type="primary" @click="edit(record)" size="small">
                   编辑
                 </a-button>
-
                 <a-popconfirm
-                    title="删除之后，数据将不可恢复，是否要继续删除"
+                    title="删除后不可恢复，确认删除?"
                     ok-text="是"
                     cancel-text="否"
                     @confirm="handleDelete(record.id)"
@@ -53,7 +51,7 @@
             </template>
           </a-table>
         </a-col>
-        <a-col :span="18">
+        <a-col :span="16">
           <p>
             <a-form layout="inline" :model="param">
               <a-form-item>
@@ -88,52 +86,60 @@
           </a-form>
         </a-col>
       </a-row>
+
     </a-layout-content>
   </a-layout>
-  <!--  <a-modal-->
-  <!--      title="分类表单"-->
-  <!--      v-model:visible="modalVisible"-->
-  <!--      :confirm-loading="modalLoading"-->
-  <!--      @ok="handleModalOk"-->
-  <!--  >-->
-  <!--  </a-modal>-->
 
+  <!--<a-modal-->
+  <!--  title="文档表单"-->
+  <!--  v-model:visible="modalVisible"-->
+  <!--  :confirm-loading="modalLoading"-->
+  <!--  @ok="handleModalOk"-->
+  <!--&gt;-->
+  <!--  -->
+  <!--</a-modal>-->
 </template>
+
 <script lang="ts">
-import {defineComponent, onMounted, ref, createVNode} from 'vue';
+import { defineComponent, onMounted, ref, createVNode } from 'vue';
 import axios from 'axios';
 import {message, Modal} from 'ant-design-vue';
 import {Tool} from "@/util/tool";
 import {useRoute} from "vue-router";
 import ExclamationCircleOutlined from "@ant-design/icons-vue/ExclamationCircleOutlined";
-import 'mavon-editor/dist/css/index.css'
 import E from 'wangeditor'
 
-
 export default defineComponent({
-  name: 'Admindoc',
+  name: 'AdminDoc',
   setup() {
     const route = useRoute();
+    console.log("路由：", route);
+    console.log("route.path：", route.path);
+    console.log("route.query：", route.query);
+    console.log("route.param：", route.params);
+    console.log("route.fullPath：", route.fullPath);
+    console.log("route.name：", route.name);
+    console.log("route.meta：", route.meta);
     const param = ref();
     param.value = {};
     const docs = ref();
     const loading = ref(false);
 
-
     const columns = [
       {
         title: '名称',
         dataIndex: 'name',
-        slots: {customRender: 'name'}
+        slots: { customRender: 'name' }
       },
       {
         title: 'Action',
         key: 'action',
-        slots: {customRender: 'action'}
+        slots: { customRender: 'action' }
       }
     ];
+
     /**
-     * 一级分类树，children属性就是二级分类
+     * 一级文档树，children属性就是二级文档
      * [{
      *   id: "",
      *   name: "",
@@ -143,14 +149,15 @@ export default defineComponent({
      *   }]
      * }]
      */
-    const level1 = ref(); // 一级分类树，children属性就是二级分类
+    const level1 = ref(); // 一级文档树，children属性就是二级文档
     level1.value = [];
+
     /**
      * 数据查询
      **/
     const handleQuery = () => {
       loading.value = true;
-      // 如果不清空现有的数据，则编辑保存重新加载数据后，在点击编辑，则列表显示的还是编辑前的数据
+      // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
       level1.value = [];
       axios.get("/doc/all").then((response) => {
         loading.value = false;
@@ -167,17 +174,18 @@ export default defineComponent({
         }
       });
     };
+
     // -------- 表单 ---------
     // 因为树选择组件的属性状态，会随当前编辑的节点而变化，所以单独声明一个响应式变量
     const treeSelectData = ref();
     treeSelectData.value = [];
-    // const doc = ref({});
     const doc = ref();
     doc.value = {};
     const modalVisible = ref(false);
     const modalLoading = ref(false);
-    const editor = new E("#content");
+    const editor = new E('#content');
     editor.config.zIndex = 0;
+
     const handleSave = () => {
       modalLoading.value = true;
       doc.value.content = editor.txt.html();
@@ -185,7 +193,9 @@ export default defineComponent({
         modalLoading.value = false;
         const data = response.data; // data = commonResp
         if (data.success) {
-          modalVisible.value = false;
+          // modalVisible.value = false;
+          message.success("保存成功！");
+
           // 重新加载列表
           handleQuery();
         } else {
@@ -193,7 +203,6 @@ export default defineComponent({
         }
       });
     };
-
 
     /**
      * 将某节点及其子孙节点全部置为disabled
@@ -226,7 +235,6 @@ export default defineComponent({
       }
     };
 
-    // const ids: Array<string> = [];
     const deleteIds: Array<string> = [];
     const deleteNames: Array<string> = [];
     /**
@@ -261,9 +269,10 @@ export default defineComponent({
         }
       }
     };
-    /*
-    内容查询
-     */
+
+    /**
+     * 内容查询
+     **/
     const handleQueryContent = () => {
       axios.get("/doc/find-content/" + doc.value.id).then((response) => {
         const data = response.data;
@@ -274,15 +283,21 @@ export default defineComponent({
         }
       });
     };
+
     /**
      * 编辑
      */
     const edit = (record: any) => {
+      // 清空富文本框
+      editor.txt.html("");
       modalVisible.value = true;
       doc.value = Tool.copy(record);
+      handleQueryContent();
+
       // 不能选择当前节点及其所有子孙节点，作为父节点，会使树断开
       treeSelectData.value = Tool.copy(level1.value);
       setDisable(treeSelectData.value, record.id);
+
       // 为选择树添加一个"无"
       treeSelectData.value.unshift({id: 0, name: '无'});
     };
@@ -291,19 +306,22 @@ export default defineComponent({
      * 新增
      */
     const add = () => {
+      // 清空富文本框
+      editor.txt.html("");
       modalVisible.value = true;
       doc.value = {
         ebookId: route.query.ebookId
       };
+
       treeSelectData.value = Tool.copy(level1.value);
-      handleQueryContent();
+
       // 为选择树添加一个"无"
       treeSelectData.value.unshift({id: 0, name: '无'});
-
     };
 
     const handleDelete = (id: number) => {
       // console.log(level1, level1.value, id)
+      // 清空数组，否则多次删除时，数组会一直增加
       deleteIds.length = 0;
       deleteNames.length = 0;
       getDeleteIds(level1.value, id);
@@ -323,8 +341,10 @@ export default defineComponent({
         },
       });
     };
+
     onMounted(() => {
       handleQuery();
+
       editor.create();
     });
 
@@ -338,11 +358,14 @@ export default defineComponent({
 
       edit,
       add,
+
       doc,
       modalVisible,
       modalLoading,
       handleSave,
+
       handleDelete,
+
       treeSelectData
     }
   }
