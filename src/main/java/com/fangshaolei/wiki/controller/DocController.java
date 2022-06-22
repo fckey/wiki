@@ -83,4 +83,21 @@ public class DocController {
         docService.delete(list);
         return resp;
     }
+    
+    /**
+      * @author: fangshaolei
+      * @description: 
+      * @Date: 2022/6/22 20:34
+      * @params: 
+      * @return: 
+      **/
+
+    @GetMapping("/find-content/{id}")
+    public CommonResp findContent(@Valid Long id){
+        CommonResp<String> resp = new CommonResp<>();
+        String content = docService.findContent(id);
+        resp.setContent(content);
+        // 封装数据
+        return resp;
+    }
 }

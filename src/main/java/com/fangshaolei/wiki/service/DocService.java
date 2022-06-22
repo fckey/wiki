@@ -127,4 +127,17 @@ public class DocService {
         criteria.andIdIn(ids);
         docMapper.deleteByExample(docExample);
     }
+    
+    /**
+      * @author: fangshaolei
+      * @description: 
+      * @Date: 2022/6/22 20:39
+      * @params: 
+      * @return: 
+      **/
+    public String findContent(Long id) {
+        Content content = contentMapper.selectByPrimaryKey(id);
+        if(content != null) return content.getContent();
+        else return "";
+    }
 }

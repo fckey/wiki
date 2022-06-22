@@ -31,7 +31,7 @@
               :defaultExpandAllRows="true"
           >
             <template #name="{ text, record }">
-              {{record.sort}} {{text}}
+              {{ record.sort }} {{ text }}
             </template>
             <template v-slot:action="{ text, record }">
               <a-space size="small">
@@ -90,13 +90,13 @@
       </a-row>
     </a-layout-content>
   </a-layout>
-<!--  <a-modal-->
-<!--      title="分类表单"-->
-<!--      v-model:visible="modalVisible"-->
-<!--      :confirm-loading="modalLoading"-->
-<!--      @ok="handleModalOk"-->
-<!--  >-->
-<!--  </a-modal>-->
+  <!--  <a-modal-->
+  <!--      title="分类表单"-->
+  <!--      v-model:visible="modalVisible"-->
+  <!--      :confirm-loading="modalLoading"-->
+  <!--      @ok="handleModalOk"-->
+  <!--  >-->
+  <!--  </a-modal>-->
 
 </template>
 <script lang="ts">
@@ -124,12 +124,12 @@ export default defineComponent({
       {
         title: '名称',
         dataIndex: 'name',
-        slots: { customRender: 'name' }
+        slots: {customRender: 'name'}
       },
       {
         title: 'Action',
         key: 'action',
-        slots: { customRender: 'action' }
+        slots: {customRender: 'action'}
       }
     ];
     /**
@@ -261,6 +261,19 @@ export default defineComponent({
         }
       }
     };
+    /*
+    内容查询
+     */
+    const handleQueryContent = () => {
+      axios.get("/doc/find-content/" + doc.value.id).then((response) => {
+        const data = response.data;
+        if (data.success) {
+          editor.txt.html(data.content)
+        } else {
+          message.error(data.message);
+        }
+      });
+    };
     /**
      * 编辑
      */
@@ -272,7 +285,6 @@ export default defineComponent({
       setDisable(treeSelectData.value, record.id);
       // 为选择树添加一个"无"
       treeSelectData.value.unshift({id: 0, name: '无'});
-
     };
 
     /**
@@ -284,7 +296,7 @@ export default defineComponent({
         ebookId: route.query.ebookId
       };
       treeSelectData.value = Tool.copy(level1.value);
-
+      handleQueryContent();
       // 为选择树添加一个"无"
       treeSelectData.value.unshift({id: 0, name: '无'});
 
