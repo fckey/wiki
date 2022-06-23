@@ -12,7 +12,7 @@
         </a-menu-item>
         <a-sub-menu v-for="item in level1" :key="item.id">
           <template v-slot:title>
-            <span>{{item.name}}</span>
+            <span><user-outlined />{{item.name}}</span>
           </template>
           <a-menu-item v-for="child in item.children" :key="child.id">
             <MailOutlined /><span>{{child.name}}</span>
@@ -24,7 +24,7 @@
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
     >
       <div class="welcome" v-show="isShowWelcome">
-        <h1>欢迎来到方绍雷的知识分享平台</h1>
+        <h1>欢迎使用甲蛙知识库</h1>
       </div>
       <a-list v-show="!isShowWelcome" item-layout="vertical" size="large" :grid="{ gutter: 20, column: 3 }" :data-source="ebooks">
         <template #renderItem="{ item }">
@@ -37,7 +37,9 @@
             </template>
             <a-list-item-meta :description="item.description">
               <template #title>
-                <a :href="item.href">{{ item.name }}</a>
+                <router-link :to="'/doc?ebookId=' + item.id">
+                  {{ item.name }}
+                </router-link>
               </template>
               <template #avatar><a-avatar :src="item.cover"/></template>
             </a-list-item-meta>
