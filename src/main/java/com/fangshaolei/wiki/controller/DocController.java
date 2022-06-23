@@ -32,11 +32,11 @@ public class DocController {
       * @params:
       * @return:
       **/
-    @GetMapping("/all")
-    public CommonResp<List<DocQueryResp>> all(){
+    @GetMapping("/all/{ebookId}")
+    public CommonResp<List<DocQueryResp>> all(@PathVariable Long ebookId){
         CommonResp<List<DocQueryResp>> resp = new CommonResp<>();
         // 封装数据
-        List<DocQueryResp> list = docService.all();
+        List<DocQueryResp> list = docService.all(ebookId);
         resp.setContent(list);
         return resp;
     }
