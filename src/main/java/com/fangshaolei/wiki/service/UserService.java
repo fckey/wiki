@@ -6,6 +6,7 @@ import com.fangshaolei.wiki.exception.BusinessException;
 import com.fangshaolei.wiki.exception.BusinessExceptionCode;
 import com.fangshaolei.wiki.mapper.UserMapper;
 import com.fangshaolei.wiki.req.UserQueryReq;
+import com.fangshaolei.wiki.req.UserResetPasswordReq;
 import com.fangshaolei.wiki.req.UserSaveReq;
 import com.fangshaolei.wiki.resp.PageResp;
 import com.fangshaolei.wiki.resp.UserQueryResp;
@@ -99,6 +100,7 @@ public class UserService {
     public void delete(Long id) {
         userMapper.deleteByPrimaryKey(id);
     }
+
     public User selectByLoginName(String LoginName) {
         UserExample userExample = new UserExample();
         UserExample.Criteria criteria = userExample.createCriteria();
@@ -109,6 +111,14 @@ public class UserService {
         } else {
             return userList.get(0);
         }
+    }
+
+    /**
+     * 修改密码
+     */
+    public void resetPassword(UserResetPasswordReq req) {
+        User user = CopyUtil.copy(req, User.class);
+        userMapper.updateByPrimaryKeySelective(user);
     }
 
 }

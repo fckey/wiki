@@ -1,6 +1,7 @@
 package com.fangshaolei.wiki.controller;
 
 import com.fangshaolei.wiki.req.UserQueryReq;
+import com.fangshaolei.wiki.req.UserResetPasswordReq;
 import com.fangshaolei.wiki.req.UserSaveReq;
 import com.fangshaolei.wiki.resp.CommonResp;
 import com.fangshaolei.wiki.resp.PageResp;
@@ -48,4 +49,12 @@ public class UserController {
         userService.delete(id);
         return resp;
     }
+
+    @PostMapping("/reset-password")
+    public CommonResp resetPassword(@Valid @RequestBody UserResetPasswordReq req) {
+        req.setPassword(DigestUtils.md5DigestAsHex(req.getPassword().getBytes()));
+        CommonResp resp = new CommonResp<>();
+        userService.resetPassword(req);
+        return resp;
+            }
 }
