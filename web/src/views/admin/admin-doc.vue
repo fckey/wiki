@@ -30,7 +30,7 @@
               :defaultExpandAllRows="true"
           >
             <template #name="{ text, record }">
-              {{ record.sort }} {{ text }}
+              {{record.sort}} {{text}}
             </template>
             <template v-slot:action="{ text, record }">
               <a-space size="small">
@@ -80,11 +80,9 @@
             <a-form-item>
               <a-input v-model:value="doc.sort" placeholder="顺序"/>
             </a-form-item>
-
             <a-form-item>
               <a-button type="primary" @click="handlePreviewContent()">
-                <EyeOutlined/>
-                内容预览
+                <EyeOutlined /> 内容预览
               </a-button>
             </a-form-item>
             <a-form-item>
@@ -93,9 +91,11 @@
           </a-form>
         </a-col>
       </a-row>
+
       <a-drawer width="900" placement="right" :closable="false" :visible="drawerVisible" @close="onDrawerClose">
         <div class="wangeditor" :innerHTML="previewHtml"></div>
       </a-drawer>
+
     </a-layout-content>
   </a-layout>
 
@@ -110,7 +110,7 @@
 </template>
 
 <script lang="ts">
-import {defineComponent, onMounted, ref, createVNode} from 'vue';
+import { defineComponent, onMounted, ref, createVNode } from 'vue';
 import axios from 'axios';
 import {message, Modal} from 'ant-design-vue';
 import {Tool} from "@/util/tool";
@@ -141,12 +141,12 @@ export default defineComponent({
       {
         title: '名称',
         dataIndex: 'name',
-        slots: {customRender: 'name'}
+        slots: { customRender: 'name' }
       },
       {
         title: 'Action',
         key: 'action',
-        slots: {customRender: 'action'}
+        slots: { customRender: 'action' }
       }
     ];
 
@@ -193,7 +193,6 @@ export default defineComponent({
     };
 
     // -------- 表单 ---------
-    // 因为树选择组件的属性状态，会随当前编辑的节点而变化，所以单独声明一个响应式变量
     const doc = ref();
     doc.value = {
       ebookId: route.query.ebookId
@@ -396,6 +395,7 @@ export default defineComponent({
       handleDelete,
 
       treeSelectData,
+
       drawerVisible,
       previewHtml,
       handlePreviewContent,

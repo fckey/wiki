@@ -6,23 +6,24 @@
         <a-col :span="6">
           <a-tree
               v-if="level1.length > 0"
-              :defaultExpandAll="true"
-              :defaultSelectedKeys="defaultSelectedKeys"
-              :replaceFields="{title: 'name', key: 'id', value: 'id'}"
               :tree-data="level1"
               @select="onSelect"
+              :replaceFields="{title: 'name', key: 'id', value: 'id'}"
+              :defaultExpandAll="true"
+              :defaultSelectedKeys="defaultSelectedKeys"
           >
           </a-tree>
         </a-col>
         <a-col :span="18">
-          <div :innerHTML="html" class="wangeditor"></div>
+          <div class="wangeditor" :innerHTML="html"></div>
         </a-col>
       </a-row>
     </a-layout-content>
   </a-layout>
 </template>
+
 <script lang="ts">
-import {defineComponent, onMounted, ref, createVNode} from 'vue';
+import { defineComponent, onMounted, ref, createVNode } from 'vue';
 import axios from 'axios';
 import {message} from 'ant-design-vue';
 import {Tool} from "@/util/tool";
@@ -36,6 +37,7 @@ export default defineComponent({
     const html = ref();
     const defaultSelectedKeys = ref();
     defaultSelectedKeys.value = [];
+
     /**
      * 一级文档树，children属性就是二级文档
      * [{
@@ -107,6 +109,7 @@ export default defineComponent({
   }
 });
 </script>
+
 <style>
 /* wangeditor默认样式, 参照: http://www.wangeditor.com/doc/pages/02-%E5%86%85%E5%AE%B9%E5%A4%84%E7%90%86/03-%E8%8E%B7%E5%8F%96html.html */
 /* table 样式 */
@@ -114,14 +117,12 @@ export default defineComponent({
   border-top: 1px solid #ccc;
   border-left: 1px solid #ccc;
 }
-
 .wangeditor table td,
 .wangeditor table th {
   border-bottom: 1px solid #ccc;
   border-right: 1px solid #ccc;
   padding: 3px 5px;
 }
-
 .wangeditor table th {
   border-bottom: 2px solid #ccc;
   text-align: center;
@@ -148,7 +149,6 @@ export default defineComponent({
   padding: 3px 5px;
   margin: 0 3px;
 }
-
 .wangeditor pre code {
   display: block;
 }
@@ -158,12 +158,11 @@ export default defineComponent({
   margin: 10px 0 10px 20px;
 }
 
-
 /* 和antdv p冲突，覆盖掉 */
 .wangeditor blockquote p {
-  font-family: "YouYuan";
+  font-family:"YouYuan";
   margin: 20px 10px !important;
   font-size: 16px !important;
-  font-weight: 600;
+  font-weight:600;
 }
 </style>

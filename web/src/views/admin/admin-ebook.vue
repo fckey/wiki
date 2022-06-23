@@ -1,5 +1,4 @@
 <template>
-
   <a-layout>
     <a-layout-content
         :style="{ background: '#fff', padding: '24px', margin: 0, minHeight: '280px' }"
@@ -31,7 +30,7 @@
           @change="handleTableChange"
       >
         <template #cover="{ text: cover }">
-          <img v-if="cover" :src="cover" alt="avatar"/>
+          <img v-if="cover" :src="cover" alt="avatar" />
         </template>
         <template v-slot:category="{ text, record }">
           <span>{{ getCategoryName(record.category1Id) }} / {{ getCategoryName(record.category2Id) }}</span>
@@ -46,9 +45,8 @@
             <a-button type="primary" @click="edit(record)">
               编辑
             </a-button>
-
             <a-popconfirm
-                title="删除之后，数据将不可恢复，是否要继续删除"
+                title="删除后不可恢复，确认删除?"
                 ok-text="是"
                 cancel-text="否"
                 @confirm="handleDelete(record.id)"
@@ -62,6 +60,7 @@
       </a-table>
     </a-layout-content>
   </a-layout>
+
   <a-modal
       title="电子书表单"
       v-model:visible="modalVisible"
@@ -70,30 +69,29 @@
   >
     <a-form :model="ebook" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
       <a-form-item label="封面">
-        <a-input v-model:value="ebook.cover"/>
+        <a-input v-model:value="ebook.cover" />
       </a-form-item>
       <a-form-item label="名称">
-        <a-input v-model:value="ebook.name"/>
+        <a-input v-model:value="ebook.name" />
       </a-form-item>
       <a-form-item label="分类">
         <a-cascader
             v-model:value="categoryIds"
-            :field-names="{label:'name', value: 'id', children: 'children'}"
+            :field-names="{ label: 'name', value: 'id', children: 'children' }"
             :options="level1"
         />
       </a-form-item>
       <a-form-item label="描述">
-        <a-input v-model:value="ebook.description" type="textarea"/>
+        <a-input v-model:value="ebook.description" type="textarea" />
       </a-form-item>
     </a-form>
-
   </a-modal>
-
 </template>
+
 <script lang="ts">
-import {defineComponent, onMounted, ref} from 'vue';
+import { defineComponent, onMounted, ref } from 'vue';
 import axios from 'axios';
-import {message} from 'ant-design-vue';
+import { message } from 'ant-design-vue';
 import {Tool} from "@/util/tool";
 
 export default defineComponent({
@@ -113,7 +111,7 @@ export default defineComponent({
       {
         title: '封面',
         dataIndex: 'cover',
-        slots: {customRender: 'cover'}
+        slots: { customRender: 'cover' }
       },
       {
         title: '名称',
@@ -121,7 +119,7 @@ export default defineComponent({
       },
       {
         title: '分类',
-        slots: {customRender: 'category'}
+        slots: { customRender: 'category' }
       },
       {
         title: '文档数',
@@ -138,15 +136,16 @@ export default defineComponent({
       {
         title: 'Action',
         key: 'action',
-        slots: {customRender: 'action'}
+        slots: { customRender: 'action' }
       }
     ];
+
     /**
      * 数据查询
      **/
     const handleQuery = (params: any) => {
       loading.value = true;
-      // 如果不清空现有数据，则编辑保存重新加载数据之后，在点击编辑，则列表中显示的还是编辑前的数据
+      // 如果不清空现有数据，则编辑保存重新加载数据后，再点编辑，则列表显示的还是编辑前的数据
       ebooks.value = [];
       axios.get("/ebook/list", {
         params: {
@@ -159,6 +158,7 @@ export default defineComponent({
         const data = response.data;
         if (data.success) {
           ebooks.value = data.content.list;
+
           // 重置分页按钮
           pagination.value.current = params.page;
           pagination.value.total = data.content.total;
@@ -180,7 +180,6 @@ export default defineComponent({
     };
 
     // -------- 表单 ---------
-    // const ebook = ref({});
     /**
      * 数组，[100, 101]对应：前端开发 / Vue
      */
@@ -197,6 +196,7 @@ export default defineComponent({
         const data = response.data; // data = commonResp
         if (data.success) {
           modalVisible.value = false;
+
           // 重新加载列表
           handleQuery({
             page: pagination.value.current,
@@ -238,7 +238,7 @@ export default defineComponent({
       });
     };
 
-    const level1 = ref();
+    const level1 =  ref();
     let categorys: any;
     /**
      * 查询所有分类
@@ -255,6 +255,7 @@ export default defineComponent({
           level1.value = [];
           level1.value = Tool.array2Tree(categorys, 0);
           console.log("树形结构：", level1.value);
+
           // 加载完分类后，再加载电子书，否则如果分类树加载很慢，则电子书渲染会报错
           handleQuery({
             page: 1,
@@ -265,6 +266,7 @@ export default defineComponent({
         }
       });
     };
+
     const getCategoryName = (cid: number) => {
       // console.log(cid)
       let result = "";
@@ -279,7 +281,6 @@ export default defineComponent({
 
     onMounted(() => {
       handleQueryCategory();
-
     });
 
     return {
@@ -291,15 +292,18 @@ export default defineComponent({
       handleTableChange,
       handleQuery,
       getCategoryName,
+
       edit,
       add,
+
       ebook,
       modalVisible,
       modalLoading,
       handleModalOk,
       categoryIds,
       level1,
-      handleDelete,
+
+      handleDelete
     }
   }
 });
