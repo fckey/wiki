@@ -1,5 +1,9 @@
 package com.fangshaolei.wiki.mapper;
 
+import com.fangshaolei.wiki.resp.StatisticResp;
+
+import java.util.List;
+
 /**
  * @author fongshaolei
  * @version 1.0.0
@@ -9,4 +13,5 @@ package com.fangshaolei.wiki.mapper;
  **/
 public interface EbookSnapshotMapperCust {
     public void genSnapshot();
+    List<StatisticResp> getStatistic();
 }
