@@ -3,6 +3,8 @@ package com.fangshaolei.wiki.service;
 import com.fangshaolei.wiki.domain.Content;
 import com.fangshaolei.wiki.domain.Doc;
 import com.fangshaolei.wiki.domain.DocExample;
+import com.fangshaolei.wiki.exception.BusinessException;
+import com.fangshaolei.wiki.exception.BusinessExceptionCode;
 import com.fangshaolei.wiki.mapper.ContentMapper;
 import com.fangshaolei.wiki.mapper.DocMapper;
 import com.fangshaolei.wiki.mapper.DocMapperCust;
@@ -11,6 +13,8 @@ import com.fangshaolei.wiki.req.DocSaveReq;
 import com.fangshaolei.wiki.resp.DocQueryResp;
 import com.fangshaolei.wiki.resp.PageResp;
 import com.fangshaolei.wiki.util.CopyUtil;
+import com.fangshaolei.wiki.util.RedisUtil;
+import com.fangshaolei.wiki.util.RequestContext;
 import com.fangshaolei.wiki.util.SnowFlake;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -38,6 +42,8 @@ public class DocService {
     private ContentMapper contentMapper;
     @Resource
     private DocMapperCust docMapperCust;
+    @Resource
+    public RedisUtil redisUtil;
 
     /**
      * @author: fangshaolei
@@ -155,6 +161,13 @@ public class DocService {
      * 点赞
      */
     public void vote(Long id) {
-        docMapperCust.increaseVoteCount(id);
+        // docMapperCust.increaseVoteCount(id);
+        // 远程IP+doc.id作为key，24小时内不能重复
+        String ip = RequestContext.getRemoteAddr();
+        if (redisUtil.validateRepeat("DOC_VOTE_" + id + "_" + ip, 3600 * 24)) {
+            docMapperCust.increaseVoteCount(id);
+        } else {
+            throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
+        }
     }
 }
