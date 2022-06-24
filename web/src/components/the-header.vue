@@ -1,6 +1,9 @@
 <template>
   <a-layout-header class="header">
-    <div class="logo"/>
+    <div class="logo" />
+    <a class="login-menu" @click="showLoginModal">
+      <span>登录</span>
+    </a>
     <a-menu
         theme="dark"
         mode="horizontal"
@@ -19,13 +22,10 @@
         <router-link to="/admin/category">分类管理</router-link>
       </a-menu-item>
       <a-menu-item key="/about">
-        <router-link to="/about">关于我</router-link>
+        <router-link to="/about">关于我们</router-link>
       </a-menu-item>
-      <a class="login-menu" @click="showLoginModal">
-        <span>登录</span>
-      </a>
-    </a-menu>
 
+    </a-menu>
     <a-modal
         title="登录"
         v-model:visible="loginModalVisible"
@@ -34,27 +34,27 @@
     >
       <a-form :model="loginUser" :label-col="{ span: 6 }" :wrapper-col="{ span: 18 }">
         <a-form-item label="登录名">
-          <a-input v-model:value="loginUser.loginName"/>
+          <a-input v-model:value="loginUser.loginName" />
         </a-form-item>
         <a-form-item label="密码">
-          <a-input v-model:value="loginUser.password" type="password"/>
+          <a-input v-model:value="loginUser.password" type="password" />
         </a-form-item>
       </a-form>
     </a-modal>
   </a-layout-header>
-
 </template>
+
 <script lang="ts">
-import {defineComponent, ref} from 'vue';
+import { defineComponent, ref } from 'vue';
 import axios from 'axios';
-import {message} from 'ant-design-vue';
+import { message } from 'ant-design-vue';
 
 declare let hexMd5: any;
 declare let KEY: any;
 
 export default defineComponent({
   name: 'the-header',
-  setup() {
+  setup () {
     const loginUser = ref({
       loginName: "test",
       password: "test"
@@ -92,6 +92,7 @@ export default defineComponent({
   }
 });
 </script>
+
 <style>
 .login-menu {
   float: right;
