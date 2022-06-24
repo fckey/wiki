@@ -92,4 +92,20 @@ public class UserController {
         resp.setContent(userLoginResp);
         return resp;
     }
+
+    /**
+     * @author: fangshaolei
+     * @description:
+     * @Date: 2022/6/24 10:24
+     * @params:
+     * @return:
+     **/
+    @GetMapping("/logout/{token}")
+    public CommonResp logout(@PathVariable String token) {
+        CommonResp resp = new CommonResp<>();
+        redisTemplate.delete(token);
+        LOG.info("从redis中删除token: {}", token);
+        return resp;
+    }
+
 }
