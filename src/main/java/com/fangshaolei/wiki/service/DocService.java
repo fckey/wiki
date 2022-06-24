@@ -16,6 +16,7 @@ import com.fangshaolei.wiki.util.CopyUtil;
 import com.fangshaolei.wiki.util.RedisUtil;
 import com.fangshaolei.wiki.util.RequestContext;
 import com.fangshaolei.wiki.util.SnowFlake;
+import com.fangshaolei.wiki.websocket.WebSocketServer;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.stereotype.Service;
@@ -44,6 +45,9 @@ public class DocService {
     private DocMapperCust docMapperCust;
     @Resource
     public RedisUtil redisUtil;
+    @Resource
+    public WebSocketServer webSocketServer;
+
 
     /**
      * @author: fangshaolei
@@ -169,6 +173,10 @@ public class DocService {
         } else {
             throw new BusinessException(BusinessExceptionCode.VOTE_REPEAT);
         }
+
+        // 推送消息
+        Doc docDb = docMapper.selectByPrimaryKey(id);
+        webSocketServer.sendInfo("【" + docDb.getName() + "】被点赞！");
     }
 
     public void updateEbookInfo() {
