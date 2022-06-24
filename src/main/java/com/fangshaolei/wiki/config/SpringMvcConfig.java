@@ -25,7 +25,6 @@ public class SpringMvcConfig implements WebMvcConfigurer {
                 .addPathPatterns("/**")
                 .excludePathPatterns(
                         "/test/**",
-                        "/redis/**",
                         "/user/login",
                         "/category/all",
                         "/ebook/list",
