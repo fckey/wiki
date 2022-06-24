@@ -13,6 +13,15 @@ public class UserLoginResp {
     private String loginName;
 
     private String name;
+    private String token;
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public Long getId() {
         return id;
