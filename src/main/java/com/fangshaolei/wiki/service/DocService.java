@@ -5,6 +5,7 @@ import com.fangshaolei.wiki.domain.Doc;
 import com.fangshaolei.wiki.domain.DocExample;
 import com.fangshaolei.wiki.mapper.ContentMapper;
 import com.fangshaolei.wiki.mapper.DocMapper;
+import com.fangshaolei.wiki.mapper.DocMapperCust;
 import com.fangshaolei.wiki.req.DocQueryReq;
 import com.fangshaolei.wiki.req.DocSaveReq;
 import com.fangshaolei.wiki.resp.DocQueryResp;
@@ -35,6 +36,8 @@ public class DocService {
     private SnowFlake snowFlake;
     @Resource
     private ContentMapper contentMapper;
+    @Resource
+    private DocMapperCust docMapperCust;
 
     /**
      * @author: fangshaolei
@@ -98,6 +101,8 @@ public class DocService {
         // 判断当前的id是否是存在的，如果不存在则直接新增
         if (ObjectUtils.isEmpty(req.getId())) {
             doc.setId(snowFlake.nextId());
+            doc.setViewCount(0);
+            doc.setVoteCount(0);
             // 新增 doc
             doc.setId(snowFlake.nextId());
             docMapper.insert(doc);
@@ -137,6 +142,8 @@ public class DocService {
      **/
     public String findContent(Long id) {
         Content content = contentMapper.selectByPrimaryKey(id);
+        // 文档阅读数+1
+        docMapperCust.increaseViewCount(id);
         if (ObjectUtils.isEmpty(content)) {
             return "";
         } else {
