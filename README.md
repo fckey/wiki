@@ -1,5 +1,5 @@
 # Name
-[Badges]
+[Badges] wiki知识库系统
 
 # Introduction
 # Summary
